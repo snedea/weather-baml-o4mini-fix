@@ -1,0 +1,161 @@
+{
+  "parallel_mode": false,
+  "total_tasks": 10,
+  "total_estimated_sequential": 45,
+  "tasks": [
+    {
+      "task_id": "task-1",
+      "name": "Project Foundation",
+      "description": "Create project structure and configuration files",
+      "working_directory": ".",
+      "files": [
+        ".env.example",
+        ".gitignore",
+        "README.md",
+        "requirements.txt",
+        "pyproject.toml"
+      ],
+      "dependencies": [],
+      "build_commands": [
+        "mkdir -p src/services src/models src/api tests/unit tests/integration tests/baml baml_src .context-foundry/builder-logs",
+        "touch .env.example .gitignore README.md requirements.txt pyproject.toml"
+      ]
+    },
+    {
+      "task_id": "task-2",
+      "name": "BAML Definitions",
+      "description": "Create BAML type definitions, clients, and functions",
+      "working_directory": ".",
+      "files": [
+        "baml_src/types.baml",
+        "baml_src/clients.baml",
+        "baml_src/functions.baml"
+      ],
+      "dependencies": ["task-1"],
+      "build_commands": [
+        "mkdir -p baml_src",
+        "# BAML files created by agent using Write tool"
+      ]
+    },
+    {
+      "task_id": "task-3",
+      "name": "Cache Service",
+      "description": "Implement in-memory cache with TTL support",
+      "working_directory": ".",
+      "files": [
+        "src/__init__.py",
+        "src/services/__init__.py",
+        "src/services/cache_service.py"
+      ],
+      "dependencies": ["task-1"],
+      "build_commands": [
+        "mkdir -p src/services",
+        "# Python files created by agent using Write tool"
+      ]
+    },
+    {
+      "task_id": "task-4",
+      "name": "Configuration Module",
+      "description": "Create environment configuration with Pydantic",
+      "working_directory": ".",
+      "files": [
+        "src/config.py"
+      ],
+      "dependencies": ["task-1"],
+      "build_commands": [
+        "# Configuration file created by agent using Write tool"
+      ]
+    },
+    {
+      "task_id": "task-5",
+      "name": "Weather API Service",
+      "description": "Implement OpenWeatherMap API client with caching",
+      "working_directory": ".",
+      "files": [
+        "src/services/weather_api.py"
+      ],
+      "dependencies": ["task-3", "task-4"],
+      "build_commands": [
+        "# Service file created by agent using Write tool"
+      ]
+    },
+    {
+      "task_id": "task-6",
+      "name": "BAML Service",
+      "description": "Wrap BAML client with caching and error handling",
+      "working_directory": ".",
+      "files": [
+        "src/services/baml_service.py"
+      ],
+      "dependencies": ["task-2", "task-3"],
+      "build_commands": [
+        "# Service file created by agent using Write tool"
+      ]
+    },
+    {
+      "task_id": "task-7",
+      "name": "API Models",
+      "description": "Create Pydantic models for API requests/responses",
+      "working_directory": ".",
+      "files": [
+        "src/models/__init__.py",
+        "src/models/api_models.py"
+      ],
+      "dependencies": ["task-2"],
+      "build_commands": [
+        "mkdir -p src/models",
+        "# Model files created by agent using Write tool"
+      ]
+    },
+    {
+      "task_id": "task-8",
+      "name": "API Routes",
+      "description": "Implement FastAPI endpoints",
+      "working_directory": ".",
+      "files": [
+        "src/api/__init__.py",
+        "src/api/routes.py"
+      ],
+      "dependencies": ["task-5", "task-6", "task-7"],
+      "build_commands": [
+        "mkdir -p src/api",
+        "# Route files created by agent using Write tool"
+      ]
+    },
+    {
+      "task_id": "task-9",
+      "name": "FastAPI Application",
+      "description": "Create main FastAPI app with CORS and middleware",
+      "working_directory": ".",
+      "files": [
+        "src/main.py"
+      ],
+      "dependencies": ["task-8"],
+      "build_commands": [
+        "# Main app file created by agent using Write tool"
+      ]
+    },
+    {
+      "task_id": "task-10",
+      "name": "Tests",
+      "description": "Create test suite for all modules",
+      "working_directory": ".",
+      "files": [
+        "tests/__init__.py",
+        "tests/conftest.py",
+        "tests/unit/__init__.py",
+        "tests/unit/test_cache_service.py",
+        "tests/unit/test_weather_api.py",
+        "tests/unit/test_baml_service.py",
+        "tests/integration/__init__.py",
+        "tests/integration/test_pipeline.py",
+        "tests/baml/test_functions.baml"
+      ],
+      "dependencies": ["task-3", "task-5", "task-6", "task-9"],
+      "build_commands": [
+        "mkdir -p tests/unit tests/integration tests/baml",
+        "# Test files created by agent using Write tool"
+      ]
+    }
+  ]
+}
